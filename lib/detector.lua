@@ -7,8 +7,6 @@ local detector = {}
 
 ---@type Sample[]
 local samples = {}
-local lastSpeedKmh = nil
-local elapsedTime = 0
 
 ---@param filepath string
 ---@return string|nil
