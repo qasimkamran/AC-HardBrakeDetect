@@ -30,15 +30,11 @@ end
 ---@return string|nil
 local function getFileData(filepath)
     local file = io.open(filepath, "r")
-
     if not file then
         return nil
     end
-
     local data = file:read("*a")
-
     file:close()
-
     return data
 end
 
@@ -130,3 +126,4 @@ function parser.parseCSV(data)
 end
 
 return parser
+
