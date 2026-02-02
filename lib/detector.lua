@@ -8,6 +8,12 @@ local detector = {}
 ---@type Sample[]
 local samples = {}
 
+---@type number
+local lastSpeed = 0
+
+---@type number
+local elapsedTime = 0
+
 ---@param filepath string
 ---@return string|nil
 local function readFileData(filepath)
@@ -79,9 +85,36 @@ function detector.loadTelemetryFromCSV(filepath)
     return samples
 end
 
+---@param dt number|nil
+---@param state table
+---@return Sample|nil
+function detector.loadTelemetryFromCSP(dt, state)
+    ---@type Sample|nil
+    local sample = telemetry.getSamplCSP(state, dt, lastSpeed, elapsedTime)
+    if not sample then
+        return nil
+    end
+
+    ---@type number|nil
+    if not sample.speed then
+        return nil
+    end
+    lastSpeed = sample.speed
+
+    ---@type number|nil
+    if not sample.time then
+        return nil
+    end
+    elapsedTime = sample.time
+
+    samples[#samples + 1] = sample
+    return sample
+end
+
 ---@return Sample[]
 function detector.getSamples()
     return samples
 end
 
 return detector
+

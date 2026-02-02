@@ -123,7 +123,7 @@ end
 ---@param lastSpeedKmh number|nil
 ---@param elapsedTime number|nil
 ---@return Sample|nil
-function telemetry.getSampleFromCSPState(state, dt, lastSpeedKmh, elapsedTime)
+function telemetry.getSampleFromCSP(state, dt, lastSpeedKmh, elapsedTime)
     if not state then
         return nil
     end
@@ -157,3 +157,4 @@ function telemetry.getSampleFromCSPState(state, dt, lastSpeedKmh, elapsedTime)
 end
 
 return telemetry
+
