@@ -5,6 +5,13 @@ local telemetry = require("lib.telemetry")
 
 local detector = {}
 
+local HardBrakeConfig = {
+    MIN_EXPECTED_SAMPLE_RATE_HZ = 5,
+    CHANGE_IN_SPEED_THRESHOLD = 1.0,
+    PEAK_DECEL_THRESHOLD = -3.0,
+    DECEL_MIN_CONSECUTIVE_SAMPLES = 2
+}
+
 ---@type Sample[]
 local samples = {}
 
@@ -73,9 +80,6 @@ function detector.loadTelemetryFromCSV(filepath)
 
         ---@type boolean
         local braking = (tostring(sample.braking):lower() == "true") and true or false
-        if not braking then
-            goto continue
-        end
         sample.braking = braking
 
         samples[#samples + 1] = sample
@@ -116,5 +120,69 @@ function detector.getSamples()
     return samples
 end
 
-return detector
+---@param window Sample[]
+---@return boolean
+function detector.isHardBrake(window)
+    if not window or #window < 2 then
+        return false
+    end
 
+    ---@type number
+    local startSpeed = window[1].speed
+    ---@type number
+    local startTime = window[1].time
+
+    ---@type number
+    local endSpeed = window[#window].speed
+    ---@type number
+    local endTime = window[#window].time
+
+    ---@type number
+    local changeInSpeed = startSpeed - endSpeed
+    ---@type number
+    local changeInTime = endTime - startTime
+
+    if changeInTime <= 0 then
+        return false
+    end
+
+    -- Minimum expected sampling density while the brake is held.
+    local minSamplesForDuration = math.max(2, math.floor((changeInTime * HardBrakeConfig.MIN_EXPECTED_SAMPLE_RATE_HZ) + 0.5))
+    if #window < minSamplesForDuration then
+        return false
+    end
+
+    if changeInSpeed < HardBrakeConfig.CHANGE_IN_SPEED_THRESHOLD then
+        return false
+    end
+
+    ---@type number
+    local peakDecceleration = 0
+    local consecutiveBelowThreshold = 0
+    local maxConsecutiveBelowThreshold = 0
+    for i = 1, #window do
+        if window[i].acceleration < peakDecceleration then
+            peakDecceleration = window[i].acceleration
+        end
+
+        if window[i].acceleration <= HardBrakeConfig.PEAK_DECEL_THRESHOLD then
+            consecutiveBelowThreshold = consecutiveBelowThreshold + 1
+            if consecutiveBelowThreshold > maxConsecutiveBelowThreshold then
+                maxConsecutiveBelowThreshold = consecutiveBelowThreshold
+            end
+        else
+            consecutiveBelowThreshold = 0
+        end
+    end
+
+    if peakDecceleration > HardBrakeConfig.PEAK_DECEL_THRESHOLD then
+        return false
+    end
+    if maxConsecutiveBelowThreshold < HardBrakeConfig.DECEL_MIN_CONSECUTIVE_SAMPLES then
+        return false
+    end
+
+    return true
+end
+
+return detector
