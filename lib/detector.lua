@@ -186,3 +186,4 @@ function detector.isHardBrake(window)
 end
 
 return detector
+
