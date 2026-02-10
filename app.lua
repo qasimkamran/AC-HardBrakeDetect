@@ -134,13 +134,9 @@ function script.update(dt)
   ---@type table|nil
   local state = getTelemetryState()
   processBrakeTelemetry(dt, state)
-end
 
-
---> UI rendering
-
-function script.drawUI()
-  muUi.drawApp(vec2(100, 100), statusText, hardBrakeDetected)
+  --> UI rendering
+  myUi.drawApp(vec2(100, 100), statusText, hardBrakeDetected)
 end
 
 
