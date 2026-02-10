@@ -1,15 +1,22 @@
+---@type table
 local lu = require("luaunit")
+---@type table
 local telemetry = require("lib.telemetry")
 
+---@type table
 TestTelemetry = {}
 
 function TestTelemetry:testValidateHeaderAndGetSampleFromRowWithReorderedColumns()
+    ---@type string[]
     local header = { "speed", "time", "acceleration" }
+    ---@type boolean
     local isValid = telemetry.validateHeader(header)
 
     lu.assertTrue(isValid)
 
+    ---@type string[]
     local row = { "88.4", "1.5", "-2.2" }
+    ---@type table
     local sample = telemetry.getSampleFromRow(row)
 
     lu.assertEquals(sample.time, "1.5")
@@ -18,6 +25,7 @@ function TestTelemetry:testValidateHeaderAndGetSampleFromRowWithReorderedColumns
 end
 
 function TestTelemetry:testValidateHeaderFailsWhenRequiredFieldMissing()
+    ---@type string[]
     local header = { "time", "speed" }
 
     lu.assertErrorMsgContains("Required header", telemetry.validateHeader, header)
@@ -29,6 +37,7 @@ function TestTelemetry:testGetSampleFromCSPReturnsNilForInvalidState()
 end
 
 function TestTelemetry:testGetSampleFromCSPComputesTimeAndAcceleration()
+    ---@type table
     local sample = telemetry.getSampleFromCSP({ speedKmh = "72" }, 0.5, 54, 2.0)
 
     lu.assertNotNil(sample)
