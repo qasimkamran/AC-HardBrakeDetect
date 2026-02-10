@@ -8,23 +8,23 @@ function TestParser:testParseCSVReturnsNilForNilInput()
 end
 
 function TestParser:testParseCSVParsesRowsAndColumns()
-    local csv = "time,speed,acceleration,braking\n0.1,12.5,-1.2,false\n0.2,11.8,-1.9,true"
+    local csv = "time,speed,acceleration\n0.1,12.5,-1.2\n0.2,11.8,-1.9"
 
     local rows = parser.parseCSV(csv)
 
     lu.assertEquals(#rows, 3)
-    lu.assertEquals(rows[1], { "time", "speed", "acceleration", "braking" })
-    lu.assertEquals(rows[2], { "0.1", "12.5", "-1.2", "false" })
-    lu.assertEquals(rows[3], { "0.2", "11.8", "-1.9", "true" })
+    lu.assertEquals(rows[1], { "time", "speed", "acceleration" })
+    lu.assertEquals(rows[2], { "0.1", "12.5", "-1.2" })
+    lu.assertEquals(rows[3], { "0.2", "11.8", "-1.9" })
 end
 
 function TestParser:testParseCSVSupportsQuotedCommasAndCRLF()
-    local csv = 'time,speed,acceleration,braking\r\n0.1,"12,5",-1.2,false\r\n'
+    local csv = 'time,speed,acceleration\r\n0.1,"12,5",-1.2\r\n'
 
     local rows = parser.parseCSV(csv)
 
     lu.assertEquals(#rows, 2)
-    lu.assertEquals(rows[2], { "0.1", "12,5", "-1.2", "false" })
+    lu.assertEquals(rows[2], { "0.1", "12,5", "-1.2" })
 end
 
 function TestParser:testParseCSVErrorsForUnclosedQuote()
@@ -32,4 +32,3 @@ function TestParser:testParseCSVErrorsForUnclosedQuote()
 
     lu.assertErrorMsgContains("Unclosed quote", parser.parseCSV, csv)
 end
-

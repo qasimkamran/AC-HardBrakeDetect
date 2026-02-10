@@ -78,10 +78,6 @@ function detector.loadTelemetryFromCSV(filepath)
         end
         sample.acceleration = acceleration
 
-        ---@type boolean
-        local braking = (tostring(sample.braking):lower() == "true") and true or false
-        sample.braking = braking
-
         samples[#samples + 1] = sample
         ::continue::
     end
@@ -186,4 +182,3 @@ function detector.isHardBrake(window)
 end
 
 return detector
-

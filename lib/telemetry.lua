@@ -6,13 +6,11 @@ local telemetry = {}
 ---@field time number
 ---@field speed number
 ---@field acceleration number
----@field braking boolean
 
 local Fields = {
     "time",
     "speed",
-    "acceleration",
-    "braking"
+    "acceleration"
 }
 
 ---@param fields string[]
@@ -149,12 +147,10 @@ function telemetry.getSampleFromCSP(state, dt, lastSpeedKmh, elapsedTime)
     local sample = {
         time = time,
         speed = speedKmh,
-        acceleration = acceleration,
-        braking = (tonumber(state.brake) or 0) > 0
+        acceleration = acceleration
     }
 
     return sample
 end
 
 return telemetry
-

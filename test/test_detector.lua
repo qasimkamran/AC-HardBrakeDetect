@@ -18,10 +18,10 @@ TestDetector = {}
 function TestDetector:testLoadTelemetryFromCSVParsesAndCastsFields()
     local detector = reloadDetector()
     local csv = table.concat({
-        "time,speed,acceleration,braking",
-        "0.0,80.5,-3.2,true",
-        "bad,79.1,-2.0,false",
-        "0.2,79.0,-1.4,false",
+        "time,speed,acceleration",
+        "0.0,80.5,-3.2",
+        "bad,79.1,-2.0",
+        "0.2,79.0,-1.4",
     }, "\n")
 
     local path = writeTempCSV(csv)
@@ -34,20 +34,18 @@ function TestDetector:testLoadTelemetryFromCSVParsesAndCastsFields()
     lu.assertEquals(samples[1].time, 0.0)
     lu.assertEquals(samples[1].speed, 80.5)
     lu.assertEquals(samples[1].acceleration, -3.2)
-    lu.assertTrue(samples[1].braking)
 
     lu.assertEquals(samples[2].time, 0.2)
     lu.assertEquals(samples[2].speed, 79.0)
     lu.assertEquals(samples[2].acceleration, -1.4)
-    lu.assertFalse(samples[2].braking)
 end
 
 function TestDetector:testGetSamplesReturnsInternalCollection()
     local detector = reloadDetector()
     local csv = table.concat({
-        "time,speed,acceleration,braking",
-        "0.0,30.0,-0.2,false",
-        "0.2,29.9,-0.3,false",
+        "time,speed,acceleration",
+        "0.0,30.0,-0.2",
+        "0.2,29.9,-0.3",
     }, "\n")
 
     local path = writeTempCSV(csv)
@@ -63,10 +61,10 @@ end
 function TestDetector:testIsHardBrakeReturnsTrueForSustainedStrongDeceleration()
     local detector = reloadDetector()
     local window = {
-        { time = 0.0, speed = 30.0, acceleration = -3.1, braking = true },
-        { time = 0.2, speed = 28.0, acceleration = -3.2, braking = true },
-        { time = 0.4, speed = 26.0, acceleration = -3.4, braking = true },
-        { time = 0.6, speed = 24.0, acceleration = -3.3, braking = true },
+        { time = 0.0, speed = 30.0, acceleration = -3.1 },
+        { time = 0.2, speed = 28.0, acceleration = -3.2 },
+        { time = 0.4, speed = 26.0, acceleration = -3.4 },
+        { time = 0.6, speed = 24.0, acceleration = -3.3 },
     }
 
     lu.assertTrue(detector.isHardBrake(window))
@@ -75,12 +73,11 @@ end
 function TestDetector:testIsHardBrakeReturnsFalseWhenInsufficientConsecutiveDecel()
     local detector = reloadDetector()
     local window = {
-        { time = 0.0, speed = 30.0, acceleration = -3.1, braking = true },
-        { time = 0.2, speed = 29.4, acceleration = -2.9, braking = true },
-        { time = 0.4, speed = 28.7, acceleration = -3.2, braking = true },
-        { time = 0.6, speed = 28.0, acceleration = -2.8, braking = true },
+        { time = 0.0, speed = 30.0, acceleration = -3.1 },
+        { time = 0.2, speed = 29.4, acceleration = -2.9 },
+        { time = 0.4, speed = 28.7, acceleration = -3.2 },
+        { time = 0.6, speed = 28.0, acceleration = -2.8 },
     }
 
     lu.assertFalse(detector.isHardBrake(window))
 end
-
