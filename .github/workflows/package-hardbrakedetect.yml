@@ -1,0 +1,43 @@
+name: Package HardBrakeDetect
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.4 zip
+
+      - name: Run tests
+        run: lua5.4 test/run_tests.lua
+
+      - name: Build release folder
+        run: |
+          rm -rf dist/HardBrakeDetect
+          mkdir -p dist/HardBrakeDetect
+          cp manifest.ini app.lua dist/HardBrakeDetect/
+          cp -r lib data dist/HardBrakeDetect/
+
+      - name: Create zip package
+        run: |
+          cd dist
+          zip -r HardBrakeDetect.zip HardBrakeDetect
+
+      - name: Upload zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HardBrakeDetect
+          path: dist/HardBrakeDetect.zip
+          if-no-files-found: error
