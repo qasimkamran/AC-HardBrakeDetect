@@ -18,7 +18,11 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y lua5.4 zip
+          sudo apt-get install -y lua5.4 luarocks zip
+          sudo luarocks --lua-version=5.4 install luaunit
+
+      - name: Verify test dependency
+        run: lua5.4 -e "require('luaunit')"
 
       - name: Run tests
         run: lua5.4 test/run_tests.lua
