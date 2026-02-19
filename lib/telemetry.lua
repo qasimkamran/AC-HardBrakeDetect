@@ -154,3 +154,4 @@ function telemetry.getSampleFromCSP(state, dt, lastSpeedKmh, elapsedTime)
 end
 
 return telemetry
+
