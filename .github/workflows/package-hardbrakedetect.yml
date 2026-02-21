@@ -36,8 +36,9 @@ jobs:
 
       - name: Create zip package
         run: |
+          find dist/HardBrakeDetect -type f -name '*.mp4' -delete
           cd dist
-          zip -r HardBrakeDetect.zip HardBrakeDetect
+          zip -r HardBrakeDetect.zip HardBrakeDetect -x '*.mp4'
 
       - name: Upload zip artifact
         uses: actions/upload-artifact@v4

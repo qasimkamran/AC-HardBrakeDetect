@@ -31,7 +31,7 @@ cp -r lib dist/HardBrakeDetect/
 
 ## Demo
 
-[INSERT VIDEO HERE]
+[Watch demo video](./demo.mp4)
 
 *The video above shows a driver pulling into a parking lot and braking hard a few seconds after accelerating. The prompt updates accordingly to reflect this. However, when the braking is gradual, the prompt is not displayed as expected.*
 
@@ -94,6 +94,7 @@ Defined in `manifest.ini`:
 ├── HardBrakeDetect.lua
 ├── manifest.ini
 ├── icon.png
+├── demo.mp4
 ├── README.md
 ├── NOTES.md
 ├── lib/
@@ -118,4 +119,3 @@ Defined in `manifest.ini`:
 ## License
 
 MIT License. See `LICENSE`.
-
