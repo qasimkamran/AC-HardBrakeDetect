@@ -37,8 +37,6 @@ cp -r lib dist/HardBrakeDetect/
 
 You can ignore most of the headings below if you are not forking the repository or attempting to submit PRs.
 
-Design document  - [[NOTES.md]]
-
 ## Configuration
 
 The app is currently configured through source constant config tables per file (not an external config file).
