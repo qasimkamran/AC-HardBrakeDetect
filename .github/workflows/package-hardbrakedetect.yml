@@ -9,6 +9,7 @@ on:
 
 jobs:
   package:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.head_commit.message, '$workflow')
     runs-on: ubuntu-latest
 
     steps:
