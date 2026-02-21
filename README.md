@@ -37,6 +37,8 @@ cp -r lib dist/HardBrakeDetect/
 
 You can ignore most of the headings below if you are not forking the repository or attempting to submit PRs.
 
+Design document  - [[NOTES.md]]
+
 ## Configuration
 
 The app is currently configured through source constant config tables per file (not an external config file).
@@ -86,4 +88,34 @@ Defined in `manifest.ini`:
 - Brake hard from speed and confirm the app shows `Hard Brake Detected`.
 
 ## Project Structure
+
+```text
+.
+├── HardBrakeDetect.lua
+├── manifest.ini
+├── icon.png
+├── README.md
+├── NOTES.md
+├── lib/
+│   ├── detector.lua
+│   ├── telemetry.lua
+│   ├── parser.lua
+│   ├── logger.lua
+│   └── ui.lua
+├── test/
+│   ├── run_tests.lua
+│   ├── test_detector.lua
+│   ├── test_telemetry.lua
+│   ├── test_parser.lua
+│   ├── test_logger.lua
+│   └── test_ui.lua
+├── data/
+│   └── mock_telemetry.csv
+├── log/
+└── .github/
+```
+
+## License
+
+MIT License. See `LICENSE`.
 

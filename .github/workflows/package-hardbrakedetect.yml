@@ -31,7 +31,7 @@ jobs:
         run: |
           rm -rf dist/HardBrakeDetect
           mkdir -p dist/HardBrakeDetect
-          cp manifest.ini app.lua dist/HardBrakeDetect/
+          cp manifest.ini HardBrakeDetect.lua icon.png dist/HardBrakeDetect/
           cp -r lib data dist/HardBrakeDetect/
 
       - name: Create zip package
