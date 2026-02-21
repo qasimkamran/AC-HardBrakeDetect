@@ -29,7 +29,13 @@ cp -r lib dist/HardBrakeDetect/
 - Ensure CSP Lua apps are enabled
 - Enable **Hard Brake Detect** in the app list / right-side app bar
 
-## How It Works
+## Demo
+
+[INSERT VIDEO HERE]
+
+*The video above shows a driver pulling into a parking lot and braking hard a few seconds after accelerating. The prompt updates accordingly to reflect this. However, when the braking is gradual, the prompt is not displayed as expected.*
+
+You can ignore most of the headings below if you are not forking the repository or attempting to submit PRs.
 
 ## Configuration
 
@@ -78,8 +84,6 @@ Defined in `manifest.ini`:
 - In Content Manager/CSP, make sure Lua apps are enabled.
 - Start a driving session and enable **Hard Brake Detect** from the right-side app bar.
 - Brake hard from speed and confirm the app shows `Hard Brake Detected`.
-
-## Troubleshooting
 
 ## Project Structure
 
